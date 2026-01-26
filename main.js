@@ -10,11 +10,11 @@ request.onupgradeneeded = (e) => {
 request.onsuccess = (e) => {
     db = e.target.result;
     showAllContacts();
-    console.log("Database opened successfully"); // если бд успешно запущена 
+    console.log("DB opened"); // если бд успешно запущена 
 };
 
 request.onerror = (e) => {
-    console.error("Error opening DB:", e.target.error); // если где-то ошибка
+    console.error("DB error:", e.target.error); // если где-то ошибка
 };
 
 // Обраюотка контактов
@@ -54,93 +54,37 @@ function showAllContacts() {
     };
 } // опенкурсор перебирает все обьекты и сортирует отличие от getAll 
 
-// только буквы русские и англ 
-const fioInput = document.getElementById("fio");
-fioInput.addEventListener("input", () => {
-    fioInput.value = fioInput.value.replace(/[^а-яА-ЯёЁa-zA-Z\s]/g, '');
-});
+
 
 // Изменение ФИО
 function formatFIO(fio) {
     return fio
         .toLowerCase()
         .split(" ")
-        .filter(word => word !== "")
+        .filter(Boolean)
         .map(word => word[0].toUpperCase() + word.slice(1))
         .join(" ");
-}
+};
 
-// Изменение телефона
-const telInput = document.getElementById("tel");
-
-telInput.addEventListener("input", (e) => {
-    const cursorPos = telInput.selectionStart;
-    const oldValue = telInput.value;
-
-    // убирает все кроме цифр
-    let number = oldValue.replace(/\D/g, '');
-
-    // 11 цифр
-    digits = number.slice(0, 11);
-
-    // формат со скобкой 
-    let formatted = "+7";
-    if (number.length > 1) formatted += ` (${number.slice(1,4)}`;
-    if (number.length >= 4) formatted += `) ${number.slice(4,7)}`;
-    if (number.length >= 7) formatted += `-${number.slice(7,9)}`;
-    if (number.length >= 9) formatted += `-${number.slice(9,11)}`;
-
-    // вставка измененная
-    telInput.value = formatted;
-
-    if (e.inputType?.includes("delete")) {
-        telInput.selectionStart = telInput.selectionEnd = Math.min(cursorPos, telInput.value.length);
-    }
-});
-   
-// проверка почты
-// function validateEmail(email) {
-//     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-// }
 
 function validateTel(tel) {
     const number = tel.replace(/\D/g, '');
     return number.length === 11 && number.startsWith("7");
 }
 
-// сохранение 
-document.getElementById("saveBtn").onclick = saveContact;
 
-function saveContact() {
-    const id = Number(contactId.value);
-    const fioValue = formatFIO(fio.value.trim());
-    const telValue = tel.value.trim();
-    const emailValue = email.value.trim();
+addBtn.onclick = () => {
+    modalTitle.textContent = "Добавить контакт";
+    contactId.value = "";
 
-    if (!fioValue) { alert("Введите ФИО"); return; }
-    if (!validateTel(telValue)) { alert("Введите корректный телефон"); return; }
-    // if (!validateEmail(emailValue)) { alert("Введите корректный email"); return; }
+    editFio.value = "";
+    editBirth.value = "";
+    editGender.value = "";
+    editTel.value = "";
+    editEmail.value = "";
 
-    const contact = {
-        fio: fioValue,
-        birth: birth.value,
-        gender: gender.value,
-        tel: telValue,
-        email: emailValue
-    };
-
-    const tr = db.transaction("contacts", "readwrite");
-    const store = tr.objectStore("contacts");
-
-    if (id) store.put({ id, ...contact });
-    else store.add(contact);
-
-    tr.oncomplete = () => {
-        clearForm();
-        showAllContacts();
-    };
-    tr.onerror = (e) => console.error("Error saving contact:", e.target.error);
-}
+    modal.style.display = "flex";
+};
 
 function clearForm() {
     contactId.value = "";
@@ -162,8 +106,13 @@ search.oninput = () => {
     store.openCursor().onsuccess = (e) => {
         const cursor = e.target.result;
         if (cursor) {
-            const info = Object.values(cursor.value).join(" ").toLowerCase();
-            if (info.includes(query)) render(cursor.value);
+            const text = Object.values(cursor.value)
+            .join(" ")
+            .toLowerCase();
+
+            if (text.includes(query)) {
+                render(cursor.value);
+            } 
             cursor.continue();
         }
     };
@@ -174,31 +123,30 @@ function remove(id) {
     const tr = db.transaction("contacts", "readwrite");
     tr.objectStore("contacts").delete(id);
     tr.oncomplete = showAllContacts;
-    tr.onerror = (e) => console.error("Error deleting contact:", e.target.error);
-}
+};
 
-//редактировать
+
+
 function editContact(id) {
     const tr = db.transaction("contacts", "readonly");
     const store = tr.objectStore("contacts");
 
-    store.get(id).onsuccess = e => {
-        const contact = e.target.result;
+    store.get(id).onsuccess = (e) => {
+        const c = e.target.result;
 
-        // id
-        contactId.value = contact.id;
+        modalTitle.textContent = "Редактирование";
+        contactId.value = c.id;
 
-        // заполняем МОДАЛКУ
-        editFio.value = contact.fio;
-        editBirth.value = contact.birth;
-        editGender.value = contact.gender;
-        editTel.value = contact.tel;
-        editEmail.value = contact.email;
+        editFio.value = c.fio;
+        editBirth.value = c.birth;
+        editGender.value = c.gender;
+        editTel.value = c.tel;
+        editEmail.value = c.email;
 
-        // показываем модалку
         modal.style.display = "flex";
     };
 }
+
 
 function closeModal() {
     modal.style.display = "none";
@@ -207,20 +155,31 @@ function closeModal() {
 updateBtn.onclick = () => {
     const id = Number(contactId.value);
 
-    const updatedContact = {
-        id,
+    const contact = {
         fio: formatFIO(editFio.value.trim()),
         birth: editBirth.value,
         gender: editGender.value,
         tel: editTel.value.trim(),
         email: editEmail.value.trim()
     };
+    if (!contact.fio) {
+        alert("Введите ФИО");
+        return;
+    }
 
-    if (!updatedContact.fio) { alert("Введите ФИО"); return; }
-    if (!validateTel(updatedContact.tel)) { alert("Введите корректный телефон"); return; }
+    if (!validateTel(contact.tel)) {
+        alert("Введите корректный телефон");
+        return;
+    }
 
     const tr = db.transaction("contacts", "readwrite");
-    tr.objectStore("contacts").put(updatedContact);
+    const store = tr.objectStore("contacts");
+
+    if (id) {
+        store.put({ id, ...contact });
+    } else {
+        store.add(contact);
+    }
 
     tr.oncomplete = () => {
         closeModal();
@@ -228,3 +187,49 @@ updateBtn.onclick = () => {
     };
 };
 
+const telInput = document.getElementById("editTel");
+
+telInput.addEventListener("keydown", (e) => {
+    let digits = telInput.value.replace(/\D/g,"");
+
+    if (
+        (e.key === "Backspace" || e.key === "Delete") && 
+        telInput.selectionStart <= 2
+    ) {
+        e.preventDefault();
+        return;
+    }
+
+    if (e.key === "Backspace") {
+        e.preventDefault();
+
+        if(digits.length > 1) {
+            digits = digits.slice(0,-1);
+        }
+        formatAndSet(digits);
+    }
+
+});
+
+telInput.addEventListener("input", () => {
+    let digits = telInput.value.replace(/\D/g, "");
+    if (!digits.startsWith("7")) {
+        digits = "7" + digits.replace(/^8/, "");
+    }
+    digits = digits.slice(0,11);
+    formatAndSet(digits);
+});
+
+function formatAndSet(digits) {
+    let formatted = "+7";
+    if (digits.length > 1) formatted += ` (${digits.slice(1,4)}`;
+    if (digits.length >= 4) formatted += `) ${digits.slice(4,7)}`;
+    if (digits.length >= 7) formatted += ` - ${digits.slice(7,9)}`;
+    if (digits.length >= 9) formatted += ` - ${digits.slice(9,11)}`;
+    telInput.value = formatted;
+
+    telInput.setSelectionRange(
+        telInput.value.length,
+        telInput.value.length
+    );
+};

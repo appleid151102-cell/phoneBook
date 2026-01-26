@@ -2,58 +2,48 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Контакты</title>
+    <title>phoneBook</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
-    <h1>Контакты</h1>
+    <h1>Справочная книга</h1>
 
-    <!-- Добавление -->
-    <div class="card form">
-        <input id="fio" placeholder="ФИО">
-        <input type="date" id="birth">
-        <select id="gender">
-            <option value="">Пол</option>
-            <option>Мужской</option>
-            <option>Женский</option>
-        </select>
-        <input id="tel" placeholder="Телефон">
-        <input id="email" placeholder="Email">
-        <button id="saveBtn">Добавить</button>
-    </div>
+    <button id="addBtn">＋ Добавить контакт</button>
 
     <input id="search" placeholder="Поиск">
 
-    <!-- Таблица -->
-   <table>
-    <thead>
-        <tr>
-            <th>ФИО</th>
-            <th>Дата рождения</th>
-            <th>Пол</th>
-            <th>Телефон</th>
-            <th>Email</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="list"></tbody>
-</table>
+    <table>
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Дата рождения</th>
+                <th>Пол</th>
+                <th>Телефон</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="list"></tbody>
+    </table>
+</div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
     <div class="modal-content">
-        <h2>Редактирование</h2>
+        <h2 id="modalTitle">Контакт</h2>
 
         <input type="hidden" id="contactId">
+
         <input id="editFio" placeholder="ФИО">
         <input type="date" id="editBirth">
+
         <select id="editGender">
             <option value="">Пол</option>
             <option>Мужской</option>
             <option>Женский</option>
         </select>
+
         <input id="editTel" placeholder="Телефон">
         <input id="editEmail" placeholder="Email">
 
