@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакты</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+    <h1>Контакты</h1>
+
+    <!-- Добавление -->
+    <div class="card form">
+        <input id="fio" placeholder="ФИО">
+        <input type="date" id="birth">
+        <select id="gender">
+            <option value="">Пол</option>
+            <option>Мужской</option>
+            <option>Женский</option>
+        </select>
+        <input id="tel" placeholder="Телефон">
+        <input id="email" placeholder="Email">
+        <button id="saveBtn">Добавить</button>
+    </div>
+
+    <input id="search" placeholder="Поиск">
+
+    <!-- Таблица -->
+   <table>
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Дата рождения</th>
+            <th>Пол</th>
+            <th>Телефон</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="list"></tbody>
+</table>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2>Редактирование</h2>
+
+        <input type="hidden" id="contactId">
+        <input id="editFio" placeholder="ФИО">
+        <input type="date" id="editBirth">
+        <select id="editGender">
+            <option value="">Пол</option>
+            <option>Мужской</option>
+            <option>Женский</option>
+        </select>
+        <input id="editTel" placeholder="Телефон">
+        <input id="editEmail" placeholder="Email">
+
+        <div class="modal-actions">
+            <button id="updateBtn">Сохранить</button>
+            <button class="cancel" onclick="closeModal()">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
