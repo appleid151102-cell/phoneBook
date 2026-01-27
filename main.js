@@ -41,7 +41,16 @@ function render(contact) {
 // Отображение контактов 
 function showAllContacts() {
     const list = document.getElementById("list");
-    list.innerHTML = "";
+    list.innerHTML = ` 
+    <tr>
+            <th>ФИО</th>
+            <th>Дата рождения</th>
+            <th>Пол</th>
+            <th>Телефон</th>
+            <th>Email</th>
+            <th>Действия</th>
+        </tr>
+        `;
     const tr = db.transaction("contacts", "readonly");
     const store = tr.objectStore("contacts");
 
@@ -99,8 +108,16 @@ function clearForm() {
 search.oninput = () => {
     const query = search.value.toLowerCase();
     const list = document.getElementById("list");
-    list.innerHTML = "";
-
+    list.innerHTML = `
+    <tr>
+    <th>ФИО</th>
+    <th>Дата рождения</th>
+    <th>Пол</th>
+    <th>Телефон</th>
+    <th>Email</th>
+    <th>Действия</th>
+    </tr>
+    `;
     const tr = db.transaction("contacts", "readonly");
     const store = tr.objectStore("contacts");
     store.openCursor().onsuccess = (e) => {
