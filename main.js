@@ -21,6 +21,7 @@ request.onerror = (e) => {
 function render(contact) {
     const list = document.getElementById("list");
     const tr = document.createElement("tr");
+    tr.classList.add("row");
 
     tr.innerHTML = `
         <td>${contact.fio}</td>
@@ -29,8 +30,13 @@ function render(contact) {
         <td>${contact.tel}</td>
         <td>${contact.email}</td>
         <td>
-            <button onclick="editContact(${contact.id})">Редактировать</button>
-            <button onclick="remove(${contact.id})">Удалить</button>
+            <button onclick="editContact(${contact.id})">
+            <span class="material-symbols-outlined">edit</span>
+            </button>
+
+            <button onclick="remove(${contact.id})">
+            <span class="material-symbols-outlined">delete_forever</span>
+            </button>
         </td>
     `;
 
@@ -41,16 +47,7 @@ function render(contact) {
 // Отображение контактов 
 function showAllContacts() {
     const list = document.getElementById("list");
-    list.innerHTML = ` 
-    <tr>
-            <th>ФИО</th>
-            <th>Дата рождения</th>
-            <th>Пол</th>
-            <th>Телефон</th>
-            <th>Email</th>
-            <th>Действия</th>
-        </tr>
-        `;
+    list.innerHTML = "";
     const tr = db.transaction("contacts", "readonly");
     const store = tr.objectStore("contacts");
 
@@ -108,16 +105,7 @@ function clearForm() {
 search.oninput = () => {
     const query = search.value.toLowerCase();
     const list = document.getElementById("list");
-    list.innerHTML = `
-    <tr>
-    <th>ФИО</th>
-    <th>Дата рождения</th>
-    <th>Пол</th>
-    <th>Телефон</th>
-    <th>Email</th>
-    <th>Действия</th>
-    </tr>
-    `;
+    list.innerHTML = "";
     const tr = db.transaction("contacts", "readonly");
     const store = tr.objectStore("contacts");
     store.openCursor().onsuccess = (e) => {
@@ -138,6 +126,7 @@ search.oninput = () => {
 // удаление
 function remove(id) {
     const tr = db.transaction("contacts", "readwrite");
+    if (!confirm("Удалить контакт?")) return;
     tr.objectStore("contacts").delete(id);
     tr.oncomplete = showAllContacts;
 };
@@ -250,3 +239,15 @@ function formatAndSet(digits) {
         telInput.value.length
     );
 };
+
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+}
+
+function clearDB () {
+    if (!confirm("Очистить все контакты?")) return;
+
+    const tr = db.transaction("contacts", "readwrite");
+    tr.objectStore("contacts").clear();
+    tr.oncomplete = showAllContacts;
+}

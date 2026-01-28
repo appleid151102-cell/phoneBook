@@ -14,6 +14,10 @@ body {
 h1 {
     font-weight: 500;
     margin-bottom: 20px;
+    background: white;
+    padding: 16px 24px;
+    border-radius: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
 #addBtn {
@@ -35,7 +39,7 @@ h1 {
 
 #search {
     width: 100%;
-    padding: 15px 20px;
+    padding: 15px 0px;
     border-radius: 25px;
     border: none;
     outline: none;
@@ -49,30 +53,79 @@ table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
+    background: transparent;;
 }
+
 
 thead {
     display: none;
 }
 
+.table-head {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1fr 1.5fr 2fr 1fr;
+    background: white;
+    border-radius: 25px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.table-head {
+    background: white;
+    border-radius: 25px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #202124;
+}
+
+.table-head,
+tbody tr {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1fr 1.5fr 2fr 1fr;
+    align-items: center;
+    padding: 0 16px; /* важный отступ по бокам */
+    box-sizing: border-box; /* чтобы padding не ломал ширину */
+}
+
+
 tbody tr {
     background: white;
     box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-    border-radius: 12px;
+    border-radius: 25px;
+    overflow: hidden;
     transition: background 0.2s;
+    margin-bottom: 8px; /* немного пространства между строками */
 }
 
 tbody tr:hover {
     background: #f8f9fa;
 }
 
+tbody tr td,
+.table-head > div {
+    padding: 14px 0; /* вертикальные отступы для равномерности */
+    overflow-wrap: anywhere; /* чтобы переносы не ломали сетку */
+}
+
 td {
     padding: 14px 16px;
     font-size: 14px;
+
 }
 
 td:first-child {
     font-weight: 500;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+tbody tr td:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
 
 td button {
@@ -83,6 +136,7 @@ td button {
     border-radius: 16px;
     cursor: pointer;
 }
+
 
 td button:hover {
     background: rgba(26,115,232,0.1);
@@ -139,6 +193,13 @@ select:focus {
 .modal-actions button {
     border-radius: 20px;
     padding: 8px 16px;
+    background: #1a73e8;
+    color: white;
+}
+
+.modal-actions button:hover {
+    background: black;
+    transition: background 0.5s;
 }
 
 .modal-actions .cancel {
@@ -148,4 +209,59 @@ select:focus {
 
 .modal-actions .cancel:hover {
     background: rgba(0,0,0,0.05);
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -260px; /* скрыта */
+    width: 260px;
+    height: 100vh;
+    background: white;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    right: 0;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.sidebar button {
+   width: 100%;
+   margin-bottom: 10px;
+   padding: 10px;
+   border-radius: 12px;
+   border: none;
+   background: #1a73e8;
+   color: white;
+   cursor: pointer;
+}
+
+.sidebar button:hover {
+    background: black;
+    transition: background 0.3s;
+}
+
+/* кнопка открытия */
+.sidebar-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: #1a73e8;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 1100;
 }

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>phoneBook</title>
     <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" 
+rel="stylesheet" />
 </head>
 <body>
 
@@ -12,22 +14,19 @@
 
     <button id="addBtn">＋ Добавить контакт</button>
 
-    <input id="search" placeholder="Поиск">
-
-    <table>
-        <thead>
-            <tr>
-                <th>ФИО</th>
-                <th>Дата рождения</th>
-                <th>Пол</th>
-                <th>Телефон</th>
-                <th>Email</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="list"></tbody>
-    </table>
+    <input id="search" placeholder="    Поиск">
+    <div class="table-head">
+    <div>ФИО</div>
+    <div>Дата рождения</div>
+    <div>Пол</div>
+    <div>Телефон</div>
+    <div>Email</div>
+    <div>Действия</div>
 </div>
+
+<table>
+    <tbody id="list"></tbody>
+</table>
 
 <div class="modal" id="modal">
     <div class="modal-content">
@@ -53,7 +52,17 @@
         </div>
     </div>
 </div>
+<div class="sidebar" id="sidebar">
+    <h3>Меню</h3>
 
+    <button onclick="showAllContacts()">Все контакты</button>
+    <button onclick="addBtn.click()">Добавить контакт</button>
+    <button oclick="clearDB()">Очистить базу</button>
+</div>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()"><span class="material-symbols-outlined">
+menu
+</span></button>
 <script src="main.js"></script>
 </body>
 </html>
