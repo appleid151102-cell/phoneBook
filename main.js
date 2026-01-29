@@ -34,7 +34,7 @@ function render(contact) {
             <span class="material-symbols-outlined">edit</span>
             </button>
 
-            <button onclick="remove(${contact.id})">
+            <button onclick="deleteMsgConf(${contact.id})">
             <span class="material-symbols-outlined">delete_forever</span>
             </button>
         </td>
@@ -79,19 +79,6 @@ function validateTel(tel) {
 }
 
 
-addBtn.onclick = () => {
-    modalTitle.textContent = "Добавить контакт";
-    contactId.value = "";
-
-    editFio.value = "";
-    editBirth.value = "";
-    editGender.value = "";
-    editTel.value = "";
-    editEmail.value = "";
-
-    modal.style.display = "flex";
-};
-
 function clearForm() {
     contactId.value = "";
     fio.value = "";
@@ -123,13 +110,33 @@ search.oninput = () => {
     };
 };
 
+
+const deleteMsg = document.getElementById("deleteMsg");
+
+function deleteMsgConf(id) {
+    document.getElementById("deleteMsg").style.display = "block";
+    document.getElementById("deleteBtn").onclick = () => {
+        remove(id);
+        document.getElementById("deleteMsg").style.display = "none";
+    }
+};
+
+const unDelete = document.getElementById("undeleteBtn");
+unDelete.onclick = ("click", () => {
+    document.getElementById("deleteMsg").style.display = "none";
+});
+
+
 // удаление
 function remove(id) {
     const tr = db.transaction("contacts", "readwrite");
-    if (!confirm("Удалить контакт?")) return;
-    tr.objectStore("contacts").delete(id);
-    tr.oncomplete = showAllContacts;
-};
+    const store = tr.objectStore("contacts");
+    store.delete(id);
+    tr.oncomplete = () => {
+        showAllContacts();
+    };
+}
+    
 
 
 
@@ -244,10 +251,43 @@ function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("open");
 }
 
-function clearDB () {
-    if (!confirm("Очистить все контакты?")) return;
 
+const addBtn = document.getElementById("addBtn");
+addBtn.addEventListener("click", () => {
+    modalTitle.textContent = "Добавить контакт";
+    contactId.value = "";
+    editFio.value = "";
+    editBirth.value = "";
+    editGender.value = "";
+    editTel.value = "";
+    editEmail.value = "";
+    modal.style.display = "flex";
+    closeSidebar();
+});
+
+
+
+const confirmMessage = document.getElementById("confirmMessage");
+
+function openConfirm() {
+    confirmMessage.style.display = "block";
+}
+
+document.getElementById("confirmBtn").addEventListener("click", () => {
     const tr = db.transaction("contacts", "readwrite");
     tr.objectStore("contacts").clear();
     tr.oncomplete = showAllContacts;
+    confirmMessage.style.display = "none";
+    closeSidebar();
+});
+
+
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("open");
 }
+
+const cancelBtn = document.getElementById("cancelBtn");
+cancelBtn.addEventListener("click", () => {
+    confirmMessage.style.display = "none";
+    closeSidebar();
+});

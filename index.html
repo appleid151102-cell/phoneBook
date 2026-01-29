@@ -11,10 +11,11 @@ rel="stylesheet" />
 
 <div class="app">
     <h1>Справочная книга</h1>
-
-    <button id="addBtn">＋ Добавить контакт</button>
-
-    <input id="search" placeholder="    Поиск">
+    <div class="inputSearch">
+        <span class="material-symbols-outlined">search</span>
+        <input id="search" placeholder="   Поиск контакта">
+    </div>
+    
     <div class="table-head">
     <div>ФИО</div>
     <div>Дата рождения</div>
@@ -55,10 +56,34 @@ rel="stylesheet" />
 <div class="sidebar" id="sidebar">
     <h3>Меню</h3>
 
-    <button onclick="showAllContacts()">Все контакты</button>
-    <button onclick="addBtn.click()">Добавить контакт</button>
-    <button oclick="clearDB()">Очистить базу</button>
+    <button onclick="showAllContacts(); closeSidebar()">
+        <span class="material-symbols-outlined">contacts</span>
+        <br>
+        Все контакты
+    </button>
+   <button id="addBtn">
+    <span class="material-symbols-outlined">add</span>
+    <br>
+    Добавить контакт
+</button>
+    <button onclick="openConfirm()">
+        <span class="material-symbols-outlined">contract_delete</span>
+        <br>
+        Удалить все контакты
+    </button>
 </div>
+
+<div id= "confirmMessage" class="confirmMessage">
+        <p>Вы уверены?</p>
+        <button id="confirmBtn">Да</button>
+        <button id="cancelBtn">Отмена</button>
+    </div>
+
+    <div id="deleteMsg" class="deleteMsg">
+        <p>Вы действительно хотите удалить контакт?</p>
+        <button id="deleteBtn">Да</button>
+        <button id="undeleteBtn">Отмена</button>
+    </div>
 
 <button class="sidebar-toggle" onclick="toggleSidebar()"><span class="material-symbols-outlined">
 menu

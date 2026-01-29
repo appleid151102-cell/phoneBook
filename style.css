@@ -21,32 +21,53 @@ h1 {
 }
 
 #addBtn {
-    display: inline-block;
-    margin-bottom: 15px;
-    background: #1a73e8;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background 0.5s;
+    width: 100%;
+   margin-bottom: 10px;
+   padding: 10px;
+   border-radius: 12px;
+   border: none;
+   background: #1a73e8;
+   color: white;
+   cursor: pointer;
 }
 
 #addBtn:hover {
     background: black;
 }
 
-#search {
+.inputSearch {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.inputSearch input {
     width: 100%;
     padding: 15px 0px;
+    margin-bottom: 25px;
+    padding-left: 46px;
+    padding-right: 10px;
     border-radius: 25px;
     border: none;
     outline: none;
-    margin-bottom: 25px;
+    font-size: 15px;
     background: white;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    font-size: 15px;
+    transition: all 0.3s;
+    
+}
+
+.inputSearch input:focus {
+    box-shadow: 0 4px 12px rgba(26,115,232,0.2);
+}
+
+.inputSearch span {
+   position: absolute;
+   left: 12px;
+   top: 30%;
+   color: #888;
+   transform: translateY(-45%);
+   pointer-events: none;
 }
 
 table {
@@ -69,18 +90,11 @@ thead {
     padding: 14px 16px;
     margin-bottom: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: bold;
+    font-size: 16px;
+    ;
 }
 
-.table-head {
-    background: white;
-    border-radius: 25px;
-    margin-bottom: 8px;
-    font-weight: 500;
-    font-size: 14px;
-    color: #202124;
-}
 
 .table-head,
 tbody tr {
@@ -209,29 +223,33 @@ select:focus {
 
 .modal-actions .cancel:hover {
     background: rgba(0,0,0,0.05);
+    transition: background 0.5s;
 }
 
 .sidebar {
     position: fixed;
     top: 0;
-    right: -260px; /* скрыта */
-    width: 260px;
-    height: 100vh;
+    left: -250px; /* скрыта */
+    width: 250px;
+    height: 100%;
     background: white;
     box-shadow: -2px 0 8px rgba(0,0,0,0.15);
     padding: 20px;
-    transition: right 0.3s ease;
-    z-index: 1000;
+    transition: left 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar.open {
-    right: 0;
+    left: 0;
 }
 
 .sidebar h3 {
     margin-top: 0;
     margin-bottom: 20px;
-    font-weight: 500;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 1000; 
+    text-align: center;
 }
 
 .sidebar button {
@@ -243,6 +261,7 @@ select:focus {
    background: #1a73e8;
    color: white;
    cursor: pointer;
+   margin-top: 10%;
 }
 
 .sidebar button:hover {
@@ -252,9 +271,9 @@ select:focus {
 
 /* кнопка открытия */
 .sidebar-toggle {
-    position: fixed;
+    position: fixed;;
     top: 20px;
-    right: 20px;
+    left: 20px;
     border-radius: 50%;
     width: 48px;
     height: 48px;
@@ -265,3 +284,116 @@ select:focus {
     cursor: pointer;
     z-index: 1100;
 }
+.sidebar-toggle:hover {
+    background: black;
+    transition: background 0.3s;
+}
+
+.confirmMessage {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background: #ffffff;
+    color: #202124;
+    padding: 24px 28px;
+    border-radius: 16px;
+    
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 2000;
+
+    min-width: 280px;
+    text-align: center;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+.confirmMessage p {
+    margin: 0 0 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.confirmMessage button {
+    min-width: 100px;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+/* Да */
+#confirmBtn {
+    background: #1a73e8;
+    color: white;
+}
+
+#confirmBtn:hover {
+    background: black;
+}
+
+/* Отмена */
+#cancelBtn {
+    background: transparent;
+    color: #5f6368;
+}
+
+#cancelBtn:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.deleteMsg {    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background: #ffffff;
+    color: #202124;
+    padding: 24px 28px;
+    border-radius: 16px;
+    
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 2000;
+
+    min-width: 280px;
+    text-align: center;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+.deleteMsg p {
+    margin: 0 0 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.deleteMsg button {
+    min-width: 100px;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+#deleteBtn {
+    background: #1a73e8;
+    color: white;
+}
+#deleteBtn:hover {
+    background: #000000;
+}
+
+#undeleteBtn {
+    background: transparent;
+    color: #5f6368;
+}
+
+#undeleteBtn:hover {
+    background: rgba(0,0,0,0.05);
+}
+
