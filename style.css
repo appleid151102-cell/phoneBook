@@ -209,6 +209,7 @@ select:focus {
     padding: 8px 16px;
     background: #1a73e8;
     color: white;
+    border: none;;
 }
 
 .modal-actions button:hover {
@@ -333,6 +334,7 @@ select:focus {
 
 #confirmBtn:hover {
     background: black;
+    transition: background 0.5s;
 }
 
 /* Отмена */
@@ -343,6 +345,7 @@ select:focus {
 
 #cancelBtn:hover {
     background: rgba(0,0,0,0.05);
+    transition: background 0.5s;
 }
 
 .deleteMsg {    display: none;
@@ -383,9 +386,11 @@ select:focus {
 #deleteBtn {
     background: #1a73e8;
     color: white;
+    transition: background 0.5s;
 }
 #deleteBtn:hover {
     background: #000000;
+    transition: background 0.5s;
 }
 
 #undeleteBtn {
@@ -397,3 +402,12 @@ select:focus {
     background: rgba(0,0,0,0.05);
 }
 
+#errorBtn {
+    background: #1a73e8;
+    color: white;
+}
+
+#errorBtn:hover {
+    background: black;
+    transition: background 0.5s;
+}

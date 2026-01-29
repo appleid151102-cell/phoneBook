@@ -175,13 +175,14 @@ updateBtn.onclick = () => {
         tel: editTel.value.trim(),
         email: editEmail.value.trim()
     };
+
     if (!contact.fio) {
-        alert("Введите ФИО");
+        showErrorModal("Введите ФИО");
         return;
     }
 
     if (!validateTel(contact.tel)) {
-        alert("Введите корректный телефон");
+        showErrorModal("Введите корректный телефон");
         return;
     }
 
@@ -290,4 +291,17 @@ const cancelBtn = document.getElementById("cancelBtn");
 cancelBtn.addEventListener("click", () => {
     confirmMessage.style.display = "none";
     closeSidebar();
+});
+
+const errorMsg = document.getElementById("errorMsg");
+const errorText = document.getElementById("errorText");
+const errorBtn = document.getElementById("errorBtn");
+
+function showErrorModal(message) {
+    errorText.textContent = message;
+    errorMsg.style.display = "block";
+}
+
+errorBtn.addEventListener("click", () => {
+    errorMsg.style.display = "none";
 });
