@@ -58,6 +58,7 @@ function showAllContacts() {
             cursor.continue();
         }
     };
+
 } // опенкурсор перебирает все обьекты и сортирует отличие от getAll 
 
 
@@ -249,7 +250,11 @@ function formatAndSet(digits) {
 };
 
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.querySelector('.sidebar-toggle');
+    
+    sidebar.classList.toggle("open");
+    toggleBtn.classList.toggle("open");
 }
 
 

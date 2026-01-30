@@ -10,10 +10,12 @@ rel="stylesheet" />
 <body>
 
 <div class="app">
-    <h1>Справочная книга</h1>
+    <h1><span class="material-symbols-outlined">menu_book</span>
+    Справочная книга
+    </h1>
     <div class="inputSearch">
         <span class="material-symbols-outlined">search</span>
-        <input id="search" placeholder="   Поиск контакта">
+        <input id="search" placeholder="Поиск контакта">
     </div>
     
     <div class="table-head">
@@ -56,7 +58,7 @@ rel="stylesheet" />
 <div class="sidebar" id="sidebar">
     <h3>Меню</h3>
 
-    <button onclick="showAllContacts(); closeSidebar()">
+    <button onclick="showAllContacts(); closeSidebar(); search.value = '';">
         <span class="material-symbols-outlined">contacts</span>
         <br>
         Все контакты
