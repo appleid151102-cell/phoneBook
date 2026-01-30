@@ -1,21 +1,21 @@
-let db;
+let db; // глобальная переменная для бд
 
 const request = indexedDB.open("InformationBook", 1);  //  открывает БД
 
 request.onupgradeneeded = (e) => {
     db = e.target.result;
     db.createObjectStore("contacts", { keyPath: "id", autoIncrement: true }); // используется при создании впервые кейпач указывает что у обьекта будет ид и авто подсчет
-};
+}; // если бд новая или изменилась версия
 
 request.onsuccess = (e) => {
     db = e.target.result;
     showAllContacts();
     console.log("DB opened"); // если бд успешно запущена 
-};
+}; // при успешном открытии
 
 request.onerror = (e) => {
     console.error("DB error:", e.target.error); // если где-то ошибка
-};
+}; // при ошибке открытия
 
 // Обраюотка контактов
 function render(contact) {
@@ -41,8 +41,10 @@ function render(contact) {
     `;
 
     list.appendChild(tr);
-}
+} // рендерит строку в таблице
 
+
+// toggle() переключатель
 
 // Отображение контактов 
 function showAllContacts() {
@@ -71,13 +73,13 @@ function formatFIO(fio) {
         .filter(Boolean)
         .map(word => word[0].toUpperCase() + word.slice(1))
         .join(" ");
-};
+}; 
 
 
 function validateTel(tel) {
     const number = tel.replace(/\D/g, '');
     return number.length === 11 && number.startsWith("7");
-}
+} // валидация телефона
 
 
 function clearForm() {
@@ -87,7 +89,7 @@ function clearForm() {
     gender.value = "";
     tel.value = "";
     email.value = "";
-}
+} // очистка формы
 
 //поиск
 search.oninput = () => {
@@ -109,7 +111,7 @@ search.oninput = () => {
             cursor.continue();
         }
     };
-};
+}; // поиск по всем полям
 
 
 const deleteMsg = document.getElementById("deleteMsg");
@@ -120,12 +122,12 @@ function deleteMsgConf(id) {
         remove(id);
         document.getElementById("deleteMsg").style.display = "none";
     }
-};
+}; // окно подтверждения удаления
 
 const unDelete = document.getElementById("undeleteBtn");
 unDelete.onclick = ("click", () => {
     document.getElementById("deleteMsg").style.display = "none";
-});
+}); // отмена удаления
 
 
 // удаление
@@ -175,7 +177,7 @@ updateBtn.onclick = () => {
         gender: editGender.value,
         tel: editTel.value.trim(),
         email: editEmail.value.trim()
-    };
+    }; // создание обьекта контакта
 
     if (!contact.fio) {
         showErrorModal("Введите ФИО");
@@ -251,11 +253,13 @@ function formatAndSet(digits) {
 
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.querySelector('.sidebar-toggle');
-    
-    sidebar.classList.toggle("open");
-    toggleBtn.classList.toggle("open");
-}
+    const toggleBtn = document.querySelector('.sidebar-toggle'); // кнопка открытия панели
+    const mainContent = document.getElementById("mainContent"); // вся страница
+
+    const isOpen = sidebar.classList.toggle("open");
+    toggleBtn.classList.toggle("open", isOpen);
+    mainContent.classList.toggle("shifted", isOpen);
+} // открытие и закрытие боковой панели
 
 
 const addBtn = document.getElementById("addBtn");
@@ -269,7 +273,7 @@ addBtn.addEventListener("click", () => {
     editEmail.value = "";
     modal.style.display = "flex";
     closeSidebar();
-});
+}); // открытие модального окна для добавления контакта
 
 
 
@@ -284,12 +288,14 @@ document.getElementById("confirmBtn").addEventListener("click", () => {
     tr.objectStore("contacts").clear();
     tr.oncomplete = showAllContacts;
     confirmMessage.style.display = "none";
-    closeSidebar();
-});
+    closeSidebar(); 
+}); // очистка всех контактов
 
 
 function closeSidebar() {
     document.getElementById("sidebar").classList.remove("open");
+    document.querySelector('.sidebar-toggle').classList.remove("open");
+    document.getElementById("mainContent").classList.remove("shifted");
 }
 
 const cancelBtn = document.getElementById("cancelBtn");
